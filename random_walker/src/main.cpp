@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <vector>
+#include <omp.h>
+
 
 class Walker
 {
@@ -16,10 +18,10 @@ public:
   void update()
   {
     path.push_back(pos);
-    const float x = GetRandomValue(-100, 100) / 100.0f;
-    const float y = GetRandomValue(-100, 100) / 100.0f;
 
-    const auto move = Vector2{x, y};
+    const float x    = GetRandomValue(-100, 100) / 100.0f;
+    const float y    = GetRandomValue(-100, 100) / 100.0f;
+    const auto  move = Vector2{x, y};
 
     pos = Vector2Add(pos, move);
   }
@@ -42,12 +44,11 @@ int main(void)
   const int screenWidth  = 800;
   const int screenHeight = 600;
 
-  SetTargetFPS(60);
+  // SetTargetFPS(60);
 
   InitWindow(screenWidth, screenHeight, "raylib [core] example");
 
   std::vector<Walker> walkers;
-
   for (int i = 0; i < 100; ++i) {
     Walker w;
     walkers.push_back(w);
@@ -56,6 +57,8 @@ int main(void)
   // Main game loop
   while (!WindowShouldClose()) {
     // Update
+
+#pragma omp parallel for
     for (auto& w: walkers) {
       w.update();
     }

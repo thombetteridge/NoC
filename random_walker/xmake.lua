@@ -7,10 +7,10 @@ set_warnings("all")
 set_optimize("fast")     -- set optimization level for release mode
 
 -- Add required packages
-add_requires("raylib")
+add_requires("raylib", "openmp")
 
 -- Define the target
 target("random-walker")
 set_kind("binary")        -- Specify target type
 add_files("src/*.cpp")    -- Add all source files
-add_packages("raylib")    -- Link against raylib
+add_packages("raylib", "openmp")    -- Link against raylib
