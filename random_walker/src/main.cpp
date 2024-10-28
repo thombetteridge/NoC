@@ -28,8 +28,12 @@ public:
 
   void draw()
   {
-    DrawLineStrip(path.data(), path.size(), BLUE);
     DrawCircle(pos.x, pos.y, 3, RED);
+  }
+
+  void draw_path()
+  {
+    DrawLineStrip(path.data(), path.size(), BLUE);
   }
 
 private:
@@ -49,7 +53,10 @@ int main(void)
   InitWindow(screenWidth, screenHeight, "raylib [core] example");
 
   std::vector<Walker> walkers;
-  for (int i = 0; i < 100; ++i) {
+
+  const int num_of_walkers = 1000;
+
+  for (int i = 0; i < num_of_walkers; ++i) {
     Walker w;
     walkers.push_back(w);
   }
@@ -66,6 +73,9 @@ int main(void)
     {
       BeginDrawing();
       ClearBackground(RAYWHITE);
+      for (auto& w: walkers) {
+        w.draw_path();
+      }
       for (auto& w: walkers) {
         w.draw();
       }
